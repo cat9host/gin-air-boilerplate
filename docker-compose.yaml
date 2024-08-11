@@ -1,0 +1,28 @@
+version: '3.5'
+
+services:
+  gin-api:
+    build:
+      context: ./
+      dockerfile: ./build/Dockerfile
+      args:
+        TARGET_DIR: /app
+        GOBIN: /app
+    volumes:
+      - .:/go/src/github.com/cat9host/gin-air-boilerplate
+      - $GOPATH/pkg:/go/pkg
+    ports:
+      - ${PORT}:${PORT}
+      - ${METRICS_PORT}:${METRICS_PORT}
+      - ${HC_PORT}:${HC_PORT}
+    environment:
+      TARGET_DIR: /app
+      GOBIN: /app
+    env_file:
+      - .env
+    networks:
+      - gin-network
+
+networks:
+  gin-network:
+    driver: bridge
